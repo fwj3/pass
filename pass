@@ -1,0 +1,44 @@
+import requests
+
+import hashlib
+
+
+
+def check_password(password):
+
+
+    sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+
+    prefix = sha1_password[:5]  
+
+    suffix = sha1_password[5:]  
+
+
+
+    url = f"https://api.pwnedpasswords.com/range/{prefix}"
+
+    response = requests.get(url)
+
+    for line in response.text.splitlines():
+
+
+        pwned_suffix, count = line.split(':')
+
+
+        if pwned_suffix == suffix:
+
+  
+
+            print( "الباسورد مخترق ")
+
+            return
+
+
+    print(" الباسورد ليس مخترق ")
+
+
+
+my_password = input("  Enter your password :) : ")
+
+
+check_password(my_password)
